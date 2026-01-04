@@ -24,7 +24,6 @@ Công cụ tự động cập nhật địa chỉ IP công khai của tên miề
 
 ## 📦 Cài đặt
 
-
 ### Tạo file cấu hình
 
 Đổi tên file config.example.json thành config.json
@@ -71,33 +70,33 @@ File `config.json` có cấu trúc như sau:
 
 #### 1. Telegram (Tùy chọn)
 
-| Tham số | Mô tả | Bắt buộc |
-|---------|-------|----------|
-| `botToken` | Token của Telegram Bot | Không |
-| `chatId` | Chat ID để nhận thông báo | Không |
+| Tham số    | Mô tả                     | Bắt buộc |
+| ---------- | ------------------------- | -------- |
+| `botToken` | Token của Telegram Bot    | Không    |
+| `chatId`   | Chat ID để nhận thông báo | Không    |
 
 > **Lưu ý**: Nếu không cần thông báo Telegram, có thể bỏ qua phần này hoặc để trống.
 
 #### 2. Defaults (Giá trị mặc định)
 
-| Tham số | Mô tả | Mặc định | Bắt buộc |
-|---------|-------|----------|----------|
-| `apiToken` | Cloudflare API Token mặc định | - | Có (nếu domain không có token riêng) |
-| `ttl` | Time To Live (giây) | 60 | Không |
-| `proxied` | Bật Cloudflare Proxy | false | Không |
-| `checkIntervalSeconds` | Thời gian kiểm tra (giây) | 60 | Không |
+| Tham số                | Mô tả                         | Mặc định | Bắt buộc                             |
+| ---------------------- | ----------------------------- | -------- | ------------------------------------ |
+| `apiToken`             | Cloudflare API Token mặc định | -        | Có (nếu domain không có token riêng) |
+| `ttl`                  | Time To Live (giây)           | 60       | Không                                |
+| `proxied`              | Bật Cloudflare Proxy          | false    | Không                                |
+| `checkIntervalSeconds` | Thời gian kiểm tra (giây)     | 60       | Không                                |
 
 #### 3. Domains (Danh sách domain)
 
 Mỗi domain có thể có các thuộc tính sau:
 
-| Tham số | Mô tả | Bắt buộc |
-|---------|-------|----------|
-| `name` | Tên domain hoặc subdomain | Có |
-| `zoneId` | Zone ID của domain trên Cloudflare | Có |
-| `apiToken` | API Token riêng (override default) | Không |
-| `ttl` | TTL riêng (override default) | Không |
-| `proxied` | Proxied riêng (override default) | Không |
+| Tham số    | Mô tả                              | Bắt buộc |
+| ---------- | ---------------------------------- | -------- |
+| `name`     | Tên domain hoặc subdomain          | Có       |
+| `zoneId`   | Zone ID của domain trên Cloudflare | Có       |
+| `apiToken` | API Token riêng (override default) | Không    |
+| `ttl`      | TTL riêng (override default)       | Không    |
+| `proxied`  | Proxied riêng (override default)   | Không    |
 
 ## 🔑 Lấy thông tin từ Cloudflare
 
@@ -134,9 +133,11 @@ Mỗi domain có thể có các thuộc tính sau:
 ### 2. Lấy Chat ID
 
 **Cách 1**: Dùng bot [@userinfobot](https://t.me/userinfobot)
+
 - Mở bot và nó sẽ hiển thị Chat ID của bạn
 
 **Cách 2**: Dùng API
+
 1. Gửi tin nhắn bất kỳ cho bot của bạn
 2. Truy cập: `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
 3. Tìm giá trị `"id"` trong `"chat"` object
@@ -156,25 +157,30 @@ Mỗi domain có thể có các thuộc tính sau:
 
 ### Chạy script bằng pm2
 
-* Cài đặt PM2 (nếu chưa có)
+- Cài đặt PM2 (nếu chưa có)
+
 ```bash
 npm install pm2 -g
 ```
 
-* Di chuyển đến thư mục dự án rồi khởi chạy
+- Di chuyển đến thư mục dự án rồi khởi chạy
+
 ```bash
 pm2 start ecosystem.config.js
 ```
 
-* Đảm bảo PM2 khởi động cùng hệ thống (sau khi reboot):
+- Đảm bảo PM2 khởi động cùng hệ thống (sau khi reboot):
+
 ```bash
 pm2 save
 ```
+
 ```bash
 pm2 startup
 ```
 
-* Xem log
+- Xem log
+
 ```bash
 pm2 logs cloudflare-ddns
 ```
@@ -212,12 +218,14 @@ pm2 logs cloudflare-ddns
 ### Script không chạy
 
 **Kiểm tra**:
+
 - Node.js đã cài đúng phiên bản chưa: `node --version` (cần >= 18.0.0)
 - File `config.json` có tồn tại không
 - Cấu hình JSON có đúng cú pháp không
 - Cài PM2 chưa
 
 **Giải pháp**:
+
 ```bash
 # Kiểm tra cú pháp JSON
 node -e "console.log(JSON.parse(require('fs').readFileSync('config.json')))"
@@ -226,10 +234,12 @@ node -e "console.log(JSON.parse(require('fs').readFileSync('config.json')))"
 ### Lỗi "Không tìm thấy A record"
 
 **Nguyên nhân**:
+
 - Domain chưa có A record trên Cloudflare
 - Tên domain trong config không khớp với DNS record
 
 **Giải pháp**:
+
 1. Đăng nhập Cloudflare Dashboard
 2. Vào **DNS** → **Records**
 3. Tạo A record cho domain với IP bất kỳ
@@ -240,6 +250,7 @@ node -e "console.log(JSON.parse(require('fs').readFileSync('config.json')))"
 **Nguyên nhân**: API Token không hợp lệ hoặc không đủ quyền
 
 **Giải pháp**:
+
 1. Kiểm tra lại API Token
 2. Đảm bảo token có quyền **Edit DNS** và **Read Zone**
 3. Kiểm tra Zone ID có đúng không
@@ -249,6 +260,7 @@ node -e "console.log(JSON.parse(require('fs').readFileSync('config.json')))"
 **Nguyên nhân**: Bot Token hoặc Chat ID không đúng
 
 **Giải pháp**:
+
 1. Kiểm tra lại Bot Token
 2. Đảm bảo đã gửi ít nhất 1 tin nhắn cho bot
 3. Kiểm tra Chat ID có đúng không
@@ -257,15 +269,16 @@ node -e "console.log(JSON.parse(require('fs').readFileSync('config.json')))"
 ### IP không được cập nhật
 
 **Kiểm tra**:
+
 - Xem log có lỗi gì không
 - Kiểm tra kết nối Internet
 - Test API: `curl https://api.ipify.org?format=json`
 
 **Giải pháp**:
+
 - Tăng `checkIntervalSeconds` nếu mạng không ổn định
 - Kiểm tra firewall có chặn không
 - Restart script
-
 
 ```
 
@@ -309,3 +322,4 @@ Nếu gặp vấn đề, hãy:
 ---
 
 **Lưu ý**: Script này sử dụng native fetch API của Node.js 18+, không cần cài thêm dependencies nào.
+```
