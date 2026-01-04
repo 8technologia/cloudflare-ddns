@@ -1,10 +1,20 @@
 {
   "_comment": "Cấu hình Dynamic DNS cho Cloudflare - Đổi tên file này thành config.json để sử dụng",
 
+  "notification": {
+    "_comment": "Chế độ thông báo: 'telegram', 'discord', 'both', 'none'",
+    "mode": "telegram"
+  },
+
   "telegram": {
     "_comment": "Thông tin Telegram bot (optional - bỏ qua nếu không cần thông báo)",
     "botToken": "YOUR_TELEGRAM_BOT_TOKEN",
     "chatId": "YOUR_TELEGRAM_CHAT_ID"
+  },
+
+  "discord": {
+    "_comment": "Thông tin Discord webhook (optional - bỏ qua nếu không cần thông báo)",
+    "webhookUrl": "YOUR_DISCORD_WEBHOOK_URL"
   },
 
   "defaults": {
